@@ -31,3 +31,4 @@ export const AppDataSource = new DataSource({
   // Required by Render PostgreSQL
   ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
+
