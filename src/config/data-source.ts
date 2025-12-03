@@ -1,18 +1,33 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Level } from "../entities/Level";
-import { KitchenCategory } from "../entities/KitchenCategory";
-import { Admin } from "../entities/Admin";
-import { KitchenItem } from "../entities/KitchenItem";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// If DATABASE_URL exists → production (Render)
+// Else → use local values
+const isProduction = !!process.env.DATABASE_URL;
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5430,
-  username: "postgres",        
-  password: "freshcode",   
-  database: "kitchen_db",      
+
+  // Use DATABASE_URL on Render, normal config locally
+  url: isProduction ? process.env.DATABASE_URL : undefined,
+
+  host: isProduction ? undefined : process.env.DB_HOST,
+  port: isProduction ? undefined : Number(process.env.DB_PORT),
+  username: isProduction ? undefined : process.env.DB_USER,
+  password: isProduction ? undefined : process.env.DB_PASS,
+  database: isProduction ? undefined : process.env.DB_NAME,
+
   synchronize: true,
-  logging: true,
-  entities: [Level, KitchenCategory, Admin, KitchenItem],
+  logging: false,
+
+  // Entities for dev (ts) & production (js)
+  entities: isProduction
+    ? ["dist/entities/*.js"]
+    : ["src/entities/*.ts"],
+
+  // Required by Render PostgreSQL
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
