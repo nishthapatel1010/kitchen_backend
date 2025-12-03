@@ -12,6 +12,9 @@ export class Admin {
   @Column({ unique: true })
   email!: string;
 
+   @Column({ nullable: true })
+  gender!: string;
+  
   @OneToMany(() => KitchenItem, item => item.admin)
   items!: KitchenItem[];
 }

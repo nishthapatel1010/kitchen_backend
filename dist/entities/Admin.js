@@ -28,6 +28,10 @@ __decorate([
     __metadata("design:type", String)
 ], Admin.prototype, "email", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Admin.prototype, "gender", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => KitchenItem_1.KitchenItem, item => item.admin),
     __metadata("design:type", Array)
 ], Admin.prototype, "items", void 0);

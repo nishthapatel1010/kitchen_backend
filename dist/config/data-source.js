@@ -20,12 +20,15 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: isProduction ? undefined : process.env.DB_USER,
     password: isProduction ? undefined : process.env.DB_PASS,
     database: isProduction ? undefined : process.env.DB_NAME,
-    synchronize: true,
+    synchronize: false,
     logging: false,
     // Entities for dev (ts) & production (js)
     entities: isProduction
         ? ["dist/entities/*.js"]
         : ["src/entities/*.ts"],
+    migrations: isProduction
+        ? ["dist/migration/*.js"]
+        : ["src/migration/*.ts"],
     // Required by Render PostgreSQL
     ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
